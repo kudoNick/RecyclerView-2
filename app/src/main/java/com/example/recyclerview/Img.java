@@ -18,4 +18,8 @@ public class Img {
     public String getImg() {
         return img;
     }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 }

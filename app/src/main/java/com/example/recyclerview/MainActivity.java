@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     RecyclerView rcvData;
-    List<Object> mData = new ArrayList<>(); ;
+    List<Object> mData ; ;
     DataAdapter dataAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +36,27 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rcvData.setLayoutManager(layoutManager);
-
+        mData = new ArrayList<>();
 
         getDataUser();
-        getDataImg();
         getDataText();
+        getDataImg();
 
+        //Recycler view trong Recycler view
+        mData.add(R.layout.row_recyclerview);
+        rcvData.setAdapter(dataAdapter);
 
     }
 
     private void getDataUser() {
-
+        System.out.println("click start user");
         AndroidNetworking.get("https://jsonplaceholder.typicode.com/users/")
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
                         System.out.println("Click user");
+
                         for (int i = 0; i <response.length() ; i++) {
                             try {
                                 User user = new User(response.getJSONObject(i));
@@ -72,12 +76,13 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
     public void getDataImg (){
+        System.out.println("click start img");
         AndroidNetworking.get("https://api.github.com/users")
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        System.out.println("Click img");
+                        System.out.println("click  img");
                         for (int i = 0; i <response.length() ; i++) {
                             try {
                                 Img img = new Img(response.getJSONObject(i));
@@ -87,12 +92,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                          dataAdapter = new DataAdapter(mData, MainActivity.this);
-
                     }
-
                     @Override
                     public void onError(ANError anError) {
-
                     }
                 });
     }
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        System.out.println("Click Text");
+                        System.out.println("click Text");
                         for (int i = 0; i <response.length() ; i++) {
                             try {
                                 Text text = new Text(response.getJSONObject(i));
